@@ -9,7 +9,7 @@ from base.models import Product, Review
 from base.serializers import ProductSerializer
 
 from .sentimentAnalysis.review_SA import review_SA
-
+from .sangwon.fake_review_detection import main
 from rest_framework import status
 
 
@@ -135,6 +135,7 @@ def createProductReview(request, pk):
     # 3 - Create review
     else:
         temp = review_SA.predict(data['comment'])
+        
 
         review = Review.objects.create(
             user=user,

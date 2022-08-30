@@ -29,7 +29,7 @@ def main():
     # train_vector = np.load("C:/Users/ssw97/models/train_2020.npy") # 저장된 numpy 파일 불러옴. 이거는 sqlite로 불러오는 걸로 바꿔야 함.
     sqlite3.register_adapter(np.ndarray, adapt_array)
     sqlite3.register_converter("array", convert_array) # 이거 두 줄이 중요함. 이거없으면 배열 불러올때 오류걸려서 개같음
-    con = sqlite3.connect("C:/Users/ssw97/models/train.db", detect_types=sqlite3.PARSE_DECLTYPES)
+    con = sqlite3.connect("./train.sqlite3", detect_types=sqlite3.PARSE_DECLTYPES)
     cur = con.cursor()
 
       
@@ -39,8 +39,8 @@ def main():
     # cur.execute("insert into train_vector (arr) values (?)", (train_vector))
 
     #    
-    con = sqlite3.connect("./train.db", detect_types=sqlite3.PARSE_DECLTYPES)
-    cur = con.cursor()
+    #con = sqlite3.connect("./train.db", detect_types=sqlite3.PARSE_DECLTYPES)
+    #cur = con.cursor()
 
     cur.execute("select arr from train_vector")
     # data = np.frombuffer(cur.fetchone()[0], dtype = 'float64').reshape(shape)
