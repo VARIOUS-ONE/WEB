@@ -9,7 +9,8 @@ from base.models import Product, Review
 from base.serializers import ProductSerializer
 
 from .sentimentAnalysis.review_SA import review_SA
-from .sangwon.fake_review_detection import main
+#from .sangwon.fake_review_detection import main
+#from .sangwon.kobart_summary import kobart_summary
 from rest_framework import status
 
 
@@ -135,8 +136,15 @@ def createProductReview(request, pk):
     # 3 - Create review
     else:
         temp = review_SA.predict(data['comment'])
+       # main(data['comment']) # temp1 가짜판별 ()
+
+        summary_comment = ""
+        if(len(data['comment']) >= 150):
+            #summary_comment = kobart_summary(data['comment']) # temp2  요약문장(str)
+            pass
         
 
+        
         review = Review.objects.create(
             user=user,
             product=product,
