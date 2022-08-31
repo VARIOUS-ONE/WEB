@@ -9,7 +9,7 @@ from base.models import Product, Review
 from base.serializers import ProductSerializer
 
 from .sentimentAnalysis.review_SA import review_SA
-from .sangwon.fake_review_detection import fake_review_detection
+from .sangwon.fake_review_detection import fake_review
 from .sangwon.kobart_summary import kobart
 #print(fake_review_detection.predict("1", "안녕하세요")) # temp1 가짜판별 ()
 #print(fake_review_detection.predict("2","슬!롯!머!신 욕심 안내면  돈 벌어갈 수 있음 꼭 돈 잃는애들보면 욕심 많아가지고 잃는거임홀?홀?덤?덤?c?o?m?"))
@@ -142,7 +142,7 @@ def createProductReview(request, pk):
     else:
         temp = review_SA.predict(data['comment'])
         print(data)
-        # fake_review_detection.predict(data['user'], data['comment']) # temp1 가짜판별 ()
+        fake_review.predict(data['user'], data['comment']) # temp1 가짜판별 ()
 
         summary_comment = ""
         if(len(data['comment']) >= 150):
