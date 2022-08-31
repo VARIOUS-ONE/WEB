@@ -26,10 +26,10 @@ function SearchBox() {
 
             <Button
                 type='submit'
-                variant='outline-success'
+                variant='outline-light'
                 className='p-2'
             >
-                Submit
+                search
             </Button>
         </Form>
     )

@@ -15,18 +15,6 @@ function HomeScreen({ history }) {
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList)
     const { error, loading, products, page, pages } = productList
-    const Ad = () => {
-        const [isHovering, setIsHovering] = useState(0);}
-        
-            const [isHovering, setIsHovering] = useState(false);
-          
-            const handleMouseOver = () => {
-              setIsHovering(true);
-            };
-          
-            const handleMouseOut = () => {
-              setIsHovering(false);
-            };
     let keyword = history.location.search
     const [hover, setHover] = useState(false);
     useEffect(() => {
@@ -38,7 +26,6 @@ function HomeScreen({ history }) {
         <div>
             {!keyword && <ProductCarousel />}
 
-            <h1>제품 목록</h1>
             {loading ? <Loader />
                 : error ? <Message variant='danger'>{error}</Message>
                     :
@@ -48,11 +35,8 @@ function HomeScreen({ history }) {
                                 return (
                             
                                 
-                                    <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                      
-                                      <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>    
+                                    <Col key={product._id} sm={12} md={6} lg={4} xl={3}> 
                                         <Product product={product} />
-                                        {isHovering && product.name }</div>
                                     </Col>
                                     
                                 )

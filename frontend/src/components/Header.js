@@ -5,6 +5,9 @@ import { LinkContainer } from 'react-router-bootstrap'
 import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
 
+import logo from '../img/logo_12st.png'
+import "../css/Header.css"
+
 function Header() {
 
     const userLogin = useSelector(state => state.userLogin)
@@ -18,10 +21,10 @@ function Header() {
 
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+            <Navbar bg="danger" variant="dark" expand="lg" collapseOnSelect>
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand>12 번가</Navbar.Brand>
+                        <img className='logo' src={logo} alt="Logo" />
                     </LinkContainer>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
