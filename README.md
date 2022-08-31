@@ -19,7 +19,7 @@
 
 # Download & Setup Instructions
 
-**Backend**
+### Backend
 
 ```shell
 $ cd backend
@@ -37,7 +37,7 @@ $ cd backend
 $ python manage.py runserver # 좀 느림 특히 최초실행, 너무 안된다 싶음 컨트롤 시 하고 재실행.
 ```
 
- **frontend**
+### frontend
  
 ```shell
 $ cd frontend
