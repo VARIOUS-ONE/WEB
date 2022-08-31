@@ -23,7 +23,7 @@
 
 ```shell
 $ cd backend
-$ virtualenv myenv
+$ virtualenv myenv # 안 만든 경우 
 $ source myenv/bin/activate
 $ pip install —upgrade pip
 $ pip install -r requirements.txt
@@ -41,7 +41,8 @@ $ python manage.py runserver # 좀 느림 특히 최초실행, 너무 안된다 
  
 ```shell
 $ cd frontend
-$ virtualenv myenv
+$ virtualenv myenv # 안 만든 경우 
+$ source myenv/bin/activate
 $ npm install
 $ npm start
 ```
