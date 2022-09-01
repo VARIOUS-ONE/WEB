@@ -138,17 +138,6 @@ def createProductReview(request, pk):
     elif data['rating'] == 0:
         content = {'detail': 'Please select a rating'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
-
-    # 3 - wrong review
-    # elif data['rating']=='1' or data['rating']=='2':
-    #     if temp==1:
-    #         print("리뷰를 다시 한번 확인해주세요")
-    
-    # elif data['rating']=='4' or data['rating']=='5':
-    #     if temp==0:
-    #         print("리뷰를 다시 한번 확인해주세요")
-
-    # 4 - Create review
     else:
         summary = ""
         if(len(data['comment']) >= 150):
@@ -183,3 +172,26 @@ def createProductReview(request, pk):
         product.save()
 
     return Response('Review Added')
+
+
+    """
+    # 3 - wrong review
+    ml_result = review_SA.predict(data['comment'])
+
+    #부정  & 레이팅 4 이상
+    if ml_result == 0 and data['rating'] >=4:
+        return Response("1")
+    
+    #긍정 & 레이팅 2 이하
+    if ml_result == 1 and data['rating'] <=2:
+        return Response("1")
+    """
+    # elif data['rating']=='1' or data['rating']=='2':
+    #     if temp==1:
+    #         print("리뷰를 다시 한번 확인해주세요")
+    
+    # elif data['rating']=='4' or data['rating']=='5':
+    #     if temp==0:
+    #         print("리뷰를 다시 한번 확인해주세요")
+
+    # 4 - Create review

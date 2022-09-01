@@ -76,9 +76,8 @@ class fake_review():
             # blacklist 객체 생성
 
             #newdb
-            fb = Blacklist(score*100, review,ID,  datetime.datetime.now(pytz.timezone('Asia/Seoul')),str(product_id))
+            Blacklist.objects.create(score = score*100, review = review,datetime=datetime.datetime.now(pytz.timezone('Asia/Seoul')),product_id = str(product_id))
             time.sleep(2)
-            fb.save()
 
 
             #cur.execute("select * from black_list")
