@@ -20,6 +20,8 @@ class Product(models.Model):
     countInStock = models.IntegerField(null=True, blank=True, default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
+    wordcloud = models.ImageField(null=True, blank=True,
+                              default='/placeholder.png')
 
     def __str__(self):
         return self.name
@@ -35,7 +37,8 @@ class Review(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     is_positive = models.IntegerField(null=True, blank=True, default=0)
     _id = models.AutoField(primary_key=True, editable=False)
-
+    wordcloud = models.ImageField(null=True, blank=True,
+                              default='/placeholder.png')
     def __str__(self):
         return str(self.rating)
 

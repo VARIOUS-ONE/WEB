@@ -146,6 +146,8 @@ def createProductReview(request, pk):
         summary = ""
         if(len(data['comment']) >= 150):
             summary = kobart.kokobart_summary(data['comment']) # temp2  요약문장(str)
+        else:
+            summary = data['comment']
             
         review = Review.objects.create(
             user=user,
