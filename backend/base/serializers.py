@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Product, Order, OrderItem, ShippingAddress, Review
+from .models import Blacklist, Product, Order, OrderItem, ShippingAddress, Review
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -25,6 +25,11 @@ class UserSerializer(serializers.ModelSerializer):
             name = obj.email
 
         return name
+
+class BlacklistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blacklist
+        fields = ['id','product_id','score','datetime','review']
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -95,4 +100,9 @@ class OrderSerializer(serializers.ModelSerializer):
     def get_user(self, obj):
         user = obj.user
         serializer = UserSerializer(user, many=False)
+        return serializer.data
+        
+    def get_blacklist(self,obj):
+        user = obj.user
+        serializer = BlacklistSerializer(user, many=False)
         return serializer.data

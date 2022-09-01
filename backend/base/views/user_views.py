@@ -10,6 +10,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.contrib.auth.hashers import make_password
+from base.models import Blacklist ,Product
+from base.serializers import BlacklistSerializer
 from rest_framework import status
 
 
@@ -23,10 +25,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
-
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
 
 @api_view(['POST'])
 def registerUser(request):
@@ -82,8 +82,25 @@ def getUsers(request):
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
+def getBlackUsers(request, pk):
+    user = request.user
+    user = User.objects.get(id=pk)
+    serializer = BlacklistSerializer(user, many=True)
+    black = black.order_set.all() 
+    print(serializer)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
 def getUserById(request, pk):
     user = User.objects.get(id=pk)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getBlackUsers(request):
+    user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 

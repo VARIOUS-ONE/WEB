@@ -4,7 +4,6 @@
 ### 추가적으로 db파일 내 black_list 테이블에 가짜 리뷰로 식별된 유저의 유사도 점수, ID, 리뷰 내용을 저장함.
 
 import numpy as np
-import pandas as pd
 from sentence_transformers import SentenceTransformer
 import sqlite3
 import io
@@ -41,6 +40,7 @@ class fake_review():
         # ebd = np.append(ebd, review_ebd, axis = 0)
 
         con = sqlite3.connect("./base/views/sangwon/train.sqlite3", detect_types=sqlite3.PARSE_DECLTYPES)
+        #con = sqlite3.connect("./train.sqlite3", detect_types=sqlite3.PARSE_DECLTYPES)
         cur = con.cursor()
 
         
@@ -75,9 +75,13 @@ class fake_review():
             print(data)
             # db blacklist 테이블에 유사도 점수, 유저ID, 리뷰 내용 추가
         else:
+            print(score)
             print("해당 리뷰는 정상 리뷰로 분류됩니다!")
-        
+        data = np.append(data, review_ebd.reshape(1,-1), axis=0)
+        cur.execute('DELETE FROM train_vector')
+        cur.execute('insert into train_vector (arr) VALUES(?)',(data,))
+
         con.commit() # db 변경요소 저장
-        cur.close()  #   Cursor
+        cur.close()  #   Cursorls
         con.close()
-# main()
+#fake_review.predict("kktk", "fhewufhweofhewufgewuif")

@@ -26,7 +26,8 @@ urlpatterns = [
     path('api/products/', include('base.urls.product_urls')),
     path('api/users/', include('base.urls.user_urls')),
     path('api/orders/', include('base.urls.order_urls')),
-    path('visualization_wordcloud/', include('base.urls.wordcloud_urls'))
+    path('visualization_wordcloud/', include('base.urls.wordcloud_urls')),
+    path('api/black/',include('base.urls.black_urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -18,6 +18,8 @@ from .sangwon.kobart_summary import kobart
 from rest_framework import status
 import sqlite3
 
+from base.models import Blacklist
+
 @api_view(['GET'])
 def getProducts(request):
     query = request.query_params.get('keyword')
@@ -137,18 +139,29 @@ def createProductReview(request, pk):
         content = {'detail': 'Please select a rating'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    # 3 - Create review
-    else:
-        temp = review_SA.predict(data['comment'])
-        print(data)
-        fake_review.predict(data['rating'], data['comment']) # temp1 가짜판별 ()
+    # 3 - wrong review
+    # elif data['rating']=='1' or data['rating']=='2':
+    #     if temp==1:
+    #         print("리뷰를 다시 한번 확인해주세요")
+    
+    # elif data['rating']=='4' or data['rating']=='5':
+    #     if temp==0:
+    #         print("리뷰를 다시 한번 확인해주세요")
 
+    # 4 - Create review
+    else:
         summary = ""
         if(len(data['comment']) >= 150):
-            summary = kobart.kokobart_summary(data['comment']) # temp2  요약문장(str)
+            summary = kobart.kokobart_summary(data['comment']) # temp1  요약문장(str)
         else:
             summary = data['comment']
-            
+        #print(data) rating , comment . 
+
+        fake_review.predict(data['rating'], data['comment']) # temp2 가짜판별 ()
+
+        temp = review_SA.predict(data['comment'])
+
+        print(data)
         review = Review.objects.create(
             user=user,
             product=product,
@@ -169,4 +182,4 @@ def createProductReview(request, pk):
         product.rating = total / len(reviews)
         product.save()
 
-        return Response('Review Added')
+    return Response('Review Added')
