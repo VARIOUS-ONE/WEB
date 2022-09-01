@@ -16,10 +16,11 @@ function ProductScreen({ match, history }) {
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+
     const [summary, setSummary] = useState(false)
-    const [positivereview, setPositivereview] = useState(false)
-    const [negativereview, setNegativereview] = useState(false)
     const [txtsummary, setTxtsummary] = useState('요약 리뷰 보기')
+    
+    const [showreview, setShowreview] = useState(0)
 
     // useEffect(txtsummary, []);
     
@@ -247,11 +248,14 @@ function ProductScreen({ match, history }) {
 
                                             <ButtonGroup aria-label="Basic example">
                                                 <Button
-                                                    onClick={() => setPositivereview(!positivereview)}
-                                                    variant="success">긍정 리뷰만 보기</Button>
+                                                    onClick = {() => setShowreview(2)}
+                                                    variant="primary"> 모든 리뷰 보기 </Button>
                                                 <Button
-                                                    onClick={() => setNegativereview(!negativereview)} 
-                                                    variant="danger">부정 리뷰만 보기</Button>
+                                                    onClick = {() => setShowreview(1)}
+                                                    variant="success"> 긍정 리뷰만 보기 </Button>
+                                                <Button
+                                                    onClick = { () => setShowreview(0)}
+                                                    variant="danger"> 부정 리뷰만 보기 </Button>
                                                 <Button onClick={() => {
                                                     setSummary(!summary)
                                                     setTxtsummary(summary==false ? "리뷰 원문 보기" : "요약 리뷰 보기")
@@ -260,6 +264,7 @@ function ProductScreen({ match, history }) {
                                             </ButtonGroup>
 
                                         </ListGroup.Item>
+                                        
                                         {product.reviews.map((review) => (
                                             <ListGroup.Item key={review._id}>
                                                 <strong>{review.name}</strong>

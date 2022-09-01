@@ -1,3 +1,4 @@
+// import axios from 'axios'
 // import React, { useState, useEffect } from 'react'
 // import { LinkContainer } from 'react-router-bootstrap'
 // import { Table, Button } from 'react-bootstrap'
@@ -6,44 +7,47 @@
 // import Message from '../components/Message'
 // import { listUsers, deleteUser } from '../actions/blackActions'
 
-// function BlackListScreen({ history }) {
 
-//     const dispatch = useDispatch()
+// function BlackListScreen({ history }){
 
-//     const blackList = useSelector(state => state.blackList)
-//     const { loading, error,  } = blackList
+//     var blacklist = [{"model": "base.blacklist", "pk": 2, "fields": {"score": 0, "review": "포장이 겉박스도 없고고 너무 무성의사네요 머 제품은 이상 없겠지만 사소한 부분도 챙길줄 아는 판매자 원합니다 ", "datetime": "1", "product_id": "2022-09-01 21:50:32.380704+09:00"}}, {"model": "base.blacklist", "pk": 3, "fields": {"score": 34, "review": "벌써 새벽 4시가 다되가요", "datetime": "09020356", "product_id": "23"}}]
+//     var blacklistLen=2;
+//     useEffect(()=>{
+//     const getApis = async () =>{
+//         await axios.get("/black_list")
+//         .then(
+//             (response)=>{
+//                 // console.log(response.data)
+//                 blacklist =  response.data
+//                 blacklistLen = blacklist.length            <th scope="row">{{ board.id}}</th>
+//                 console.log(blacklist)
+//                 //console.log(blacklist[0]['fields'])
+//                 console.log(blacklistLen)
+//             }
+//         )}
 
+//         getApis();
+//     })
 
-//     const userLogin = useSelector(state => state.userLogin)
-//     const { userInfo } = userLogin
+//     const _sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
-//     const userDelete = useSelector(state => state.userDelete)
-//     const { success: successDelete } = userDelete
+//     const timer = async () => {
+//         await _sleep(1000);
+//         console.log('First');
+//         await _sleep(1000);
+//         console.log('Second');
+//     };
 
-
-//     useEffect(() => {
-//         if (userInfo && userInfo.isAdmin) {
-//             dispatch(listUsers())
-//         } else {
-//             history.push('/login')
-//         }
-
-//     }, [dispatch, history, successDelete, userInfo])
-
-
+//     timer();
 
 //     return (
 //         <div>
 //             <h1>Blacklist</h1>
-//             {loading
-//                 ? (<Loader />)
-//                 : error
-//                     ? (<Message variant='danger'>{error}</Message>)
-//                     : (
+//                 { blacklistLen ? 
+//                         (
 //                         <Table striped bordered hover responsive className='table-sm'>
 //                             <thead>
 //                                 <tr>
-//                                     {/* <th>id</th> */}
 //                                     <th>product_id</th>
 //                                     <th>review</th>
 //                                     <th>datetime</th>
@@ -52,20 +56,22 @@
 //                             </thead>
 
 //                             <tbody>
-//                                 {blackList.blackLists.map((Blacklist) => {
+//                                 {blacklist}
+//                                 {blacklist?.map((item) => {
 //                                     return (
-//                                         <tr>
-//                                         <td>{item.score}</td>
-//                                         <td>{item.review}</td>
-//                                         <td>{item.datetime}</td>
-//                                         <td>{item.product_id}</td> 
+//                                         <tr key = {item.fields.product_id}>
+//                                             <td>{item.fields.product_id}</td>
+//                                             <td>{item.fields.review}</td>
+//                                             <td>{item.fields.datetime}</td>
+//                                             <td>{item.fields.score}</td> 
 //                                         </tr>
 //                                     );
 //                                 })}
-                            
 //                             </tbody>
 //                         </Table>
-//                     )}
+//                     )
+//                     : (<Message variant='danger'> There is no blacklist. </Message>)
+//                 }
 //         </div>
 //     )
 // }
