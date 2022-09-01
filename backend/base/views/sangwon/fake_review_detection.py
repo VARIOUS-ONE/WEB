@@ -9,7 +9,8 @@ import sqlite3
 import io
 import datetime
 import os
-
+from base.models import blacklist
+from datetime import datetime
 # print(os.getcwd())
 sentencebert_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 
@@ -70,6 +71,12 @@ class fake_review():
         if score >= 0.95 and len(review) >= 15:
             print("해당 리뷰는 가짜리뷰 일 수 있습니다!")
             cur.execute('insert into black_list VALUES(?,?,?,?,?);', (str(score), ID, review, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), str(product_id)))
+ 
+# Feedback 객체 생성
+fb = Feedback(name = 'Kim', email = 'kim@test.com', comment='Hi', createDate=datetime.now())
+ 
+# 새 객체 INSERT
+fb.save()
             cur.execute("select * from black_list")
             data = cur.fetchone()
             print(data)

@@ -4,7 +4,7 @@ import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listUsers, deleteUser } from '../actions/userActions'
+import { listUsers, deleteUser } from '../actions/blackActions'
 
 function BlackListScreen({ history }) {
 
@@ -30,12 +30,6 @@ function BlackListScreen({ history }) {
     }, [dispatch, history, successDelete, userInfo])
 
 
-    const deleteHandler = (userid) => {
-
-        if (window.confirm('Are you sure you want to delete this user?')) {
-            dispatch(deleteUser(userid))
-        }
-    }
 
     return (
         <div>
@@ -48,11 +42,11 @@ function BlackListScreen({ history }) {
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
-                                    <th>score</th>
-                                    <th>userid</th>
+                                    <th>id</th>
+                                    <th>product_id</th>
                                     <th>review</th>
                                     <th>datetime</th>
-                                    <th></th>
+                                    <th>score</th>
                                 </tr>
                             </thead>
 
@@ -62,19 +56,8 @@ function BlackListScreen({ history }) {
                                         <td>{user._score}</td>
                                         <td>{user.userid}</td>
                                         <td>{user.review}</td>
-                                        <td>{user.datetime}</td>
-
-                                        <td>
-                                            <LinkContainer to={`/admin/user/${user._userid}/edit`}>
-                                                <Button variant='light' className='btn-sm'>
-                                                    <i className='fas fa-edit'></i>
-                                                </Button>
-                                            </LinkContainer>
-
-                                            <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(user._userid)}>
-                                                <i className='fas fa-trash'></i>
-                                            </Button>
-                                        </td>
+                                        <td>{user.datetime}</td> 
+                                        <td>-</td>
                                     </tr>
                                 ))}
                             </tbody>

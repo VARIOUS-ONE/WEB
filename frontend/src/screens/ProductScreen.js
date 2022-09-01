@@ -14,6 +14,7 @@ function ProductScreen({ match, history }) {
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+    const [summary, setSummary] = useState(false)
     
     const dispatch = useDispatch()
 
@@ -35,11 +36,6 @@ function ProductScreen({ match, history }) {
         rotationAngles: [-90, 0],
     }
     const size = [400, 300];
-    const words = [
-        {
-
-        }
-    ]
     
     const callbacks = {
         getWordColor: word => word.value > 50 ? "blue" : "red",
@@ -70,24 +66,14 @@ function ProductScreen({ match, history }) {
         {product.reviews.map((review) => (
             text+=review.comment
         ))}
-        
-        // axios.post("/visualization_wordcloud/", {
-        //     total_review: text
-        // })
+        //console.log(product.name) 핸드폰
 
-        //axios({
-        //    method: 'post',
-        //    url: '/visualization_wordcloud/',
-        //    data: {
-        //        total_review: text
-        //    }
-        //  });
-
-        axios.post('/visualization_wordcloud', {
+        axios.post('/visualization_wordcloud/', {
+            product_name: product.name,
             total_review: text
         })
-        .then((response) =>{
-            console.log(response);
+        .then((response) => {
+           console.log(response);
         });
 
         e.preventDefault()
@@ -198,16 +184,21 @@ function ProductScreen({ match, history }) {
                             <Row>
                                 <Col md={6}>
                                     <h4>Reviews</h4>
-                                    {product.reviews.length === 0 && <Message variant='info'>No Reviews</Message>}
-
+                                    <Button 
+                                        onClick={() => setSummary(!summary)}
+                                        variant="danger">
+                                        요약 리뷰 보기
+                                    </Button>
+                                    {product.reviews.length === 0 && <Message variant='danger'>No Reviews</Message>}
+                                    
                                     <ListGroup variant='flush'>
                                         {product.reviews.map((review) => (
                                             <ListGroup.Item key={review._id}>
                                                 <strong>{review.name}</strong>
                                                 <Rating value={review.rating} color='#f8e825' />
                                                 <p>{review.createdAt.substring(0, 10)}</p>
-                                                <p>{review.comment} </p>
-                                                <p>{review.summary}</p>
+                                                {summary  == false ? (<p>{review.comment} </p>) :
+                                                (<p>{review.summary}</p>)}
                                                 <p>{review.is_positive == 0 ? (
                                             <i className='fas fa-check' style={{ color: 'red' }}></i>
                                         ) : (
@@ -255,8 +246,7 @@ function ProductScreen({ match, history }) {
                                                     <Button
                                                         disabled={loadingProductReview}
                                                         type='submit'
-                                                        variant='primary'
-                                                    >
+                                                        variant='primary'>
                                                         Submit
                                                     </Button>
 
@@ -269,24 +259,21 @@ function ProductScreen({ match, history }) {
                                 </Col>
                                 
                                 <Col md={6}>
-                                    <h4>워드클라우드</h4>
-                                    <ReactWordcloud
-                                        callbacks={callbacks}
-                                        options={options}
-                                        size={size}
-                                        words={words}/>               
-                                    
-                                </Col>
-                            
+                                    <h4>리뷰 한눈에 보기</h4>
+                                    <div></div>
+                                </Col>                            
                             </Row>
                         </div>
                     )
-
             }
-
-
         </div >
     )
 }
+
+// const styles = StyleSheet.create({
+//     marginContainer: {
+//         margin: 2,
+//     },
+// });
 
 export default ProductScreen
