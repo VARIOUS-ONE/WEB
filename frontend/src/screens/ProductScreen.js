@@ -8,6 +8,7 @@ import Message from '../components/Message'
 import { listProductDetails, createProductReview } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import ReactWordcloud from 'react-wordcloud'
+import axios from 'axios'
 
 function ProductScreen({ match, history }) {
     const [qty, setQty] = useState(1)
@@ -36,48 +37,9 @@ function ProductScreen({ match, history }) {
     const size = [400, 300];
     const words = [
         {
-            text: '지립니다',
-            value: 64,
-          },
-          {
-            text: '굿',
-            value: 64,
-          },
-          {
-            text: '굳잡',
-            value: 64,
-          },
-          {
-            text: '멋져',
-            value: 64,
-          },
-          {
-            text: '예뻐요',
-            value: 64,
-          },{
-            text: '좋습니다',
-            value: 64,
-          },{
-            text: '지려요',
-            value: 64,
-          },
-          {
-            text: 'ㅡㅡ뭐임',
-            value: 34,
-          },{
-            text: '이게뭐야',
-            value: 24,
-          },{
-            text: '싫다',
-            value: 14,
-          },{
-            text: '별로',
-            value: 44,
-          },{
-            text: '우잉',
-            value: 33,
-          },
-      ]
+
+        }
+    ]
     
     const callbacks = {
         getWordColor: word => word.value > 50 ? "blue" : "red",
@@ -103,6 +65,31 @@ function ProductScreen({ match, history }) {
     }
 
     const submitHandler = (e) => {
+        
+        var text = ""
+        {product.reviews.map((review) => (
+            text+=review.comment
+        ))}
+        
+        // axios.post("/visualization_wordcloud/", {
+        //     total_review: text
+        // })
+
+        //axios({
+        //    method: 'post',
+        //    url: '/visualization_wordcloud/',
+        //    data: {
+        //        total_review: text
+        //    }
+        //  });
+
+        axios.post('/visualization_wordcloud', {
+            total_review: text
+        })
+        .then((response) =>{
+            console.log(response);
+        });
+
         e.preventDefault()
         dispatch(createProductReview(
             match.params.id, {
@@ -220,6 +207,7 @@ function ProductScreen({ match, history }) {
                                                 <Rating value={review.rating} color='#f8e825' />
                                                 <p>{review.createdAt.substring(0, 10)}</p>
                                                 <p>{review.comment} </p>
+                                                <p>{review.summary}</p>
                                                 <p>{review.is_positive == 0 ? (
                                             <i className='fas fa-check' style={{ color: 'red' }}></i>
                                         ) : (

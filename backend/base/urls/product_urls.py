@@ -14,4 +14,5 @@ urlpatterns = [
 
     path('update/<str:pk>/', views.updateProduct, name="product-update"),
     path('delete/<str:pk>/', views.deleteProduct, name="product-delete"),
+    #path('visualization_wordcloud/', views.visualization_wordcloud, name= "visualization_wordcloud"),
 ]

@@ -18,7 +18,6 @@ from .sangwon.kobart_summary import kobart
 from rest_framework import status
 import sqlite3
 
-
 @api_view(['GET'])
 def getProducts(request):
     query = request.query_params.get('keyword')
@@ -142,18 +141,19 @@ def createProductReview(request, pk):
     else:
         temp = review_SA.predict(data['comment'])
         print(data)
-        fake_review.predict(data['user'], data['comment']) # temp1 가짜판별 ()
+        fake_review.predict(data['rating'], data['comment']) # temp1 가짜판별 ()
 
-        summary_comment = ""
+        summary = ""
         if(len(data['comment']) >= 150):
-            summary_comment = "\n\n\n 요약: " +  kobart.kobart_summary(data['comment']) # temp2  요약문장(str)
-        
+            summary = kobart.kokobart_summary(data['comment']) # temp2  요약문장(str)
+            
         review = Review.objects.create(
             user=user,
             product=product,
             name=user.first_name,
             rating=data['rating'],
-            comment=data['comment'] + summary_comment,
+            comment=data['comment'],
+            summary=summary,
             is_positive = temp
         )
 

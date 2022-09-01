@@ -11,6 +11,8 @@ import Tooltip from 'react-bootstrap'
 import {arrow_box, tippy} from './message.css'
 import style from './style.js'
 
+// import "../css/HomeScreen"
+
 function HomeScreen({ history }) {
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList)
@@ -33,12 +35,9 @@ function HomeScreen({ history }) {
                         <Row>
                             {products.map(product => {
                                 return (
-                            
-                                
                                     <Col key={product._id} sm={12} md={6} lg={4} xl={3}> 
                                         <Product product={product} />
                                     </Col>
-                                    
                                 )
                             })}
                         </Row>
