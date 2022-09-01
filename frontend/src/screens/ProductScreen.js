@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button, Card, Form } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Button, ButtonGroup, Card, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -10,11 +10,18 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import ReactWordcloud from 'react-wordcloud'
 import axios from 'axios'
 
+import Picker from 'emoji-picker-react';
+
 function ProductScreen({ match, history }) {
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
     const [summary, setSummary] = useState(false)
+    const [positivereview, setPositivereview] = useState(false)
+    const [negativereview, setNegativereview] = useState(false)
+    const [txtsummary, setTxtsummary] = useState('요약 리뷰 보기')
+
+    // useEffect(txtsummary, []);
     
     const dispatch = useDispatch()
 
@@ -152,7 +159,6 @@ function ProductScreen({ match, history }) {
                                                                 onChange={(e) => setQty(e.target.value)}
                                                             >
                                                                 {
-
                                                                     [...Array(product.countInStock).keys()].map((x) => (
                                                                         <option key={x + 1} value={x + 1}>
                                                                             {x + 1}
@@ -165,7 +171,6 @@ function ProductScreen({ match, history }) {
                                                     </Row>
                                                 </ListGroup.Item>
                                             )}
-
 
                                             <ListGroup.Item>
                                                 <Button
@@ -183,31 +188,13 @@ function ProductScreen({ match, history }) {
 
                             <Row>
                                 <Col md={6}>
-                                    <h4>Reviews</h4>
-                                    <Button 
-                                        onClick={() => setSummary(!summary)}
-                                        variant="danger">
-                                        요약 리뷰 보기
-                                    </Button>
+                                    {/* <h4>Reviews</h4> */}
+
+                                    {/* {review.is_positive} */}
                                     {product.reviews.length === 0 && <Message variant='danger'>No Reviews</Message>}
                                     
                                     <ListGroup variant='flush'>
-                                        {product.reviews.map((review) => (
-                                            <ListGroup.Item key={review._id}>
-                                                <strong>{review.name}</strong>
-                                                <Rating value={review.rating} color='#f8e825' />
-                                                <p>{review.createdAt.substring(0, 10)}</p>
-                                                {summary  == false ? (<p>{review.comment} </p>) :
-                                                (<p>{review.summary}</p>)}
-                                                <p>{review.is_positive == 0 ? (
-                                            <i className='fas fa-check' style={{ color: 'red' }}></i>
-                                        ) : (
-                                                <i className='fas fa-check' style={{ color: 'green' }}></i>
-                                            )}</p>
-                                            </ListGroup.Item>
-                                        ))}
-
-                                        <ListGroup.Item>
+                                    <ListGroup.Item>
                                             <h4>Write a review</h4>
 
                                             {loadingProductReview && <Loader />}
@@ -223,7 +210,7 @@ function ProductScreen({ match, history }) {
                                                             value={rating}
                                                             onChange={(e) => setRating(e.target.value)}
                                                         >
-                                                            <option value=''>Select...</option>
+                                                            <option value=''>Select rating...</option>
                                                             <option value='1'>1 - Poor</option>
                                                             <option value='2'>2 - Fair</option>
                                                             <option value='3'>3 - Good</option>
@@ -255,6 +242,40 @@ function ProductScreen({ match, history }) {
                                                     <Message variant='info'>Please <Link to='/login'>login</Link> to write a review</Message>
                                                 )}
                                         </ListGroup.Item>
+
+                                        <ListGroup.Item>
+
+                                            <ButtonGroup aria-label="Basic example">
+                                                <Button
+                                                    onClick={() => setPositivereview(!positivereview)}
+                                                    variant="success">긍정 리뷰만 보기</Button>
+                                                <Button
+                                                    onClick={() => setNegativereview(!negativereview)} 
+                                                    variant="danger">부정 리뷰만 보기</Button>
+                                                <Button onClick={() => {
+                                                    setSummary(!summary)
+                                                    setTxtsummary(summary==false ? "리뷰 원문 보기" : "요약 리뷰 보기")
+                                                }}
+                                                variant="warning">{txtsummary}</Button>
+                                            </ButtonGroup>
+
+                                        </ListGroup.Item>
+                                        {product.reviews.map((review) => (
+                                            <ListGroup.Item key={review._id}>
+                                                <strong>{review.name}</strong>
+                                                <Rating value={review.rating} color='#f8e825' />
+                                                <p>{review.createdAt.substring(0, 10)}</p>
+
+                                                <p>{review.is_positive ? (
+                                                    <span role="img" aria-label="happy">😊</span>
+                                                ) : (
+                                                    <span role="img" aria-label="sad">😡</span>
+                                                )}</p>
+
+                                                {summary  == false ? (<p> {review.comment} </p>) : (<p>{review.summary}</p>)}
+                                                
+                                            </ListGroup.Item>
+                                        ))}
                                     </ListGroup>
                                 </Col>
                                 

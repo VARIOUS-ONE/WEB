@@ -7,11 +7,12 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import sqlite3
 import io
-import datetime
 import os
-from base.models import blacklist
-from datetime import datetime
+from base.models import Blacklist
+import datetime
 # print(os.getcwd())
+import pytz
+import time
 sentencebert_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 
 def cosine(a,b):
@@ -30,7 +31,7 @@ def convert_array(text):
 
 class fake_review():
     def predict(id, text):
-        # train_vector = np.load("C:/Users/ssw97/models/train_2020.npy") # 저장된 numpy 파일 불러옴. 이거는 sqlite로 불러오는 걸로 바꿔야 함.
+        #train_vector = np.load("C:/Users/ssw97/models/train_2020.npy") # 저장된 numpy 파일 불러옴. 이거는 sqlite로 불러오는 걸로 바꿔야 함.
         
         sqlite3.register_adapter(np.ndarray, adapt_array)
         sqlite3.register_converter("array", convert_array) # 이거 두 줄이 중요함. 이거없으면 배열 불러올때 오류걸려서 개같음
@@ -53,7 +54,7 @@ class fake_review():
         # cur.execute("insert into train_vector (arr) values (?)", (train_vector))
 
         cur.execute("select arr from train_vector")
-        # data = np.frombuffer(cur.fetchone()[0], dtype = 'float64').reshape(shape)
+        #data = np.frombuffer(cur.fetchone()[0], dtype = 'float64').reshape(shape)
         data = cur.fetchone()[0]
         print(data.shape)
 
@@ -71,16 +72,19 @@ class fake_review():
         if score >= 0.95 and len(review) >= 15:
             print("해당 리뷰는 가짜리뷰 일 수 있습니다!")
             cur.execute('insert into black_list VALUES(?,?,?,?,?);', (str(score), ID, review, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), str(product_id)))
- 
-# Feedback 객체 생성
-fb = Feedback(name = 'Kim', email = 'kim@test.com', comment='Hi', createDate=datetime.now())
- 
-# 새 객체 INSERT
-fb.save()
-            cur.execute("select * from black_list")
-            data = cur.fetchone()
-            print(data)
-            # db blacklist 테이블에 유사도 점수, 유저ID, 리뷰 내용 추가
+
+            # blacklist 객체 생성
+
+            #newdb
+            fb = Blacklist(score*100, review,ID,  datetime.datetime.now(pytz.timezone('Asia/Seoul')),str(product_id))
+            time.sleep(2)
+            fb.save()
+
+
+            #cur.execute("select * from black_list")
+            #data = cur.fetchone()
+            #print(data)
+                # db blacklist 테이블에 유사도 점수, 유저ID, 리뷰 내용 추가
         else:
             print(score)
             print("해당 리뷰는 정상 리뷰로 분류됩니다!")

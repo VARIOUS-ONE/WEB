@@ -92,10 +92,9 @@ class ShippingAddress(models.Model):
         return str(self.address)
 
 class Blacklist(models.Model):
-    score =  models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    score =  models.IntegerField(null=True, blank=True)
     review = models.TextField(null=True, blank=True)
-    datetime = models.DateTimeField(
-        auto_now_add=False, null=True, blank=True)
+    datetime = models.TextField(null=True, blank=True)
     product_id = models.TextField(null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
